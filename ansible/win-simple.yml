@@ -123,21 +123,41 @@
         dest: "%HOMEDRIVE%\\"
         delete_archive: yes
 
+
+# CHOCO STUFF
+  #Upgrade all instaled packages
+    - name: Upgrade installed packages
+      win_chocolatey:
+        name: all
+        state: latest
+
+    - name: Install Visual Studio
+      register: vscode
+      win_chocolatey:
+        name: visualstudio2019community
+        state: latest
+
+# END CHOCO STUFF
+    - name: Windows reboot
+      ansible.windows.win_reboot:
+        reboot_timeout: 10000
+      when: vscode is succeeded
+
     - name: Install windows updates
       ansible.windows.win_updates:
         category_names:
-          - Application
+          # - Application
           - Connectors
-          - CriticalUpdates
-          - DefinitionUpdates
-          - DeveloperKits
-          - FeaturePacks
-          - Guidance
-          - SecurityUpdates
-          - ServicePacks
-          - Tools
-          - UpdateRollups
-          - Updates
+          # - CriticalUpdates
+          # - DefinitionUpdates
+          # - DeveloperKits
+          # - FeaturePacks
+          # - Guidance
+          # - SecurityUpdates
+          # - ServicePacks
+          # - Tools
+          # - UpdateRollups
+          # - Updates
         reboot: yes
         reboot_timeout: 10000
       register: windows_updates
